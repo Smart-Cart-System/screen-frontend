@@ -1,42 +1,78 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Root container for the shopping cart screen */
+.shopping-cart-screen {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Main content containing cart and dynamic page view */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Split evenly */
+  flex: 1;
+  height: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Cart View Section */
+.cart-view {
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Page View Section */
+.page-view {
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Sidebar on the right */
+.sidebar {
+  width: 80px;
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  color: white;
+  height: 100%;
+}
+
+/* Sidebar buttons with full width */
+.sidebar button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+  .shopping-cart-screen {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+
+  .main-content {
+    grid-template-columns: 1fr; /* Stack cart and page view */
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .cart-view, .page-view {
+    width: 100%;
+    height: 50vh;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .sidebar {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+  }
 }
