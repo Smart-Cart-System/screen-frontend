@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+type Page = 'offers' | 'page1' | 'page2' | 'page3';
+
+const App: React.FC = () => {
+  const [activePage, setActivePage] = useState<Page>('offers');
+
+  const handlePageChange = (page: Page) => {
+    setActivePage(page);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="shopping-cart-screen">
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Cart View */}
+        <section className="cart-view">
+          <h2>Your Cart</h2>
+          <p>Items in your cart: 0</p>
+          {/* Display cart items here */}
+        </section>
 
-export default App
+        {/* Offers/Other Pages */}
+        <section className="page-view">
+          {activePage === 'offers' && <div>Offers Page</div>}
+          {activePage === 'page1' && <div>Page 1 Content</div>}
+          {activePage === 'page2' && <div>Page 2 Content</div>}
+          {activePage === 'page3' && <div>Page 3 Content</div>}
+        </section>
+      </div>
+
+      {/* Sidebar (on the right) */}
+      <aside className="sidebar">
+        <button onClick={() => handlePageChange('offers')}>Offers</button>
+        <button onClick={() => handlePageChange('page1')}>Page 1</button>
+        <button onClick={() => handlePageChange('page2')}>Page 2</button>
+        <button onClick={() => handlePageChange('page3')}>Page 3</button>
+      </aside>
+    </div>
+  );
+};
+
+export default App;
