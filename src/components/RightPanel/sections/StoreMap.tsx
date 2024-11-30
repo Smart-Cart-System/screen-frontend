@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { storeMapSections, sectionProducts } from '../../../data/mockData';
-import { SectionProduct } from '../../../types';
 import SectionProducts from './SectionProducts';
 
 const StoreMap: React.FC = () => {
