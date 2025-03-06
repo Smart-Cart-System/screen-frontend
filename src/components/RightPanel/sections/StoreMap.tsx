@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { storeMapSections, sectionProducts } from '../../../data/mockData';
 import SectionProducts from './SectionProducts';
 
 const StoreMap: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'en' | 'ar';
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [showProducts, setShowProducts] = useState(false);
 
@@ -17,7 +20,7 @@ const StoreMap: React.FC = () => {
 
   if (showProducts && selectedSection) {
     const products = sectionProducts[selectedSection as keyof typeof sectionProducts];
-    const sectionName = storeMapSections.find(s => s.id === selectedSection)?.name;
+    const sectionName = storeMapSections.find(s => s.id === selectedSection)?.name[currentLanguage];
     
     return (
       <SectionProducts
@@ -29,9 +32,9 @@ const StoreMap: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-full">
-      <h2 className="text-2xl font-bold">Store Map</h2>
-      <div className="relative w-full aspect-[4/3] border rounded-lg bg-gray-100">
+    <div className="space-y-6 max-w-full pr-4">
+      <h2 className="text-2xl font-bold">{t('storeMap.title')}</h2>
+      <div className="relative w-full aspect-[4/3] border rounded-lg bg-gray-100 overflow-hidden">
         {storeMapSections.map((section) => {
           // Convert absolute coordinates to percentage-based positioning
           const left = (section.coordinates.x / 400) * 100;
@@ -57,7 +60,7 @@ const StoreMap: React.FC = () => {
               onClick={() => handleSectionClick(section.id)}
             >
               <span className="absolute inset-0 flex items-center justify-center text-sm font-medium">
-                {section.name}
+                {section.name[currentLanguage]}
               </span>
             </div>
           )

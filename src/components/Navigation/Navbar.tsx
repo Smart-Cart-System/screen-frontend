@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavSection } from '../../types';
+import { useTranslation } from 'react-i18next';
 import {
   ShoppingCartIcon,
   MapIcon,
@@ -15,13 +16,15 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ activeSection, onSectionChange }) => {
+  const { t } = useTranslation();
+
   const navItems = [
-    { id: 'offers' as NavSection, icon: ShoppingCartIcon, label: "Today's Offers" },
-    { id: 'map' as NavSection, icon: MapIcon, label: 'Store Map' },
-    { id: 'magazine' as NavSection, icon: NewspaperIcon, label: 'Offer Magazine' },
-    { id: 'checklist' as NavSection, icon: ClipboardIcon, label: 'Shopping List' },
-    { id: 'help' as NavSection, icon: QuestionMarkCircleIcon, label: 'Help' },
-    { id: 'checkout' as NavSection, icon: CreditCardIcon, label: 'Checkout' },
+    { id: 'offers' as NavSection, icon: ShoppingCartIcon, label: t('navbar.offers') },
+    { id: 'map' as NavSection, icon: MapIcon, label: t('navbar.map') },
+    { id: 'magazine' as NavSection, icon: NewspaperIcon, label: t('navbar.magazine') },
+    { id: 'checklist' as NavSection, icon: ClipboardIcon, label: t('navbar.checklist') },
+    { id: 'help' as NavSection, icon: QuestionMarkCircleIcon, label: t('navbar.help') },
+    { id: 'checkout' as NavSection, icon: CreditCardIcon, label: t('navbar.checkout') },
   ];
 
   return (

@@ -6,12 +6,16 @@ import OfferMagazine from './sections/OfferMagazine';
 import ShoppingList from './sections/ShoppingList';
 import HelpSection from './sections/HelpSection';
 import Checkout from './sections/Checkout';
+import { useTranslation } from 'react-i18next';
 
 interface RightPanelProps {
   activeSection: NavSection;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({ activeSection }) => {
+  const { i18n } = useTranslation();
+  const isRTL = i18n.dir() === 'rtl';
+  
   const renderSection = () => {
     switch (activeSection) {
       case 'offers':
@@ -27,12 +31,16 @@ const RightPanel: React.FC<RightPanelProps> = ({ activeSection }) => {
       case 'checkout':
         return <Checkout />;
       default:
-        return null;
+        return <OfferSection />;
     }
   };
 
+  // In RTL mode, the panel is actually on the left side of the screen due to flex-row-reverse
   return (
-    <div className="h-screen flex-1 ml-1/2 mr-16 bg-white p-6 overflow-y-auto">
+    <div 
+      className={`h-screen w-1/2 p-6 ${isRTL ? 'ml-16 pr-20' : 'ml-16 pr-20'} overflow-y-auto`}
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       {renderSection()}
     </div>
   );
