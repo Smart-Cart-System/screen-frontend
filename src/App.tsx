@@ -10,7 +10,7 @@ import { CartWebSocket, CartWebSocketMessage } from './services/websocket';
 import { fetchCartItems, fetchItemByBarcode } from './services/api';
 
 // For testing purposes - these would normally come from authentication
-const DEFAULT_CART_ID = 1;
+// const DEFAULT_CART_ID = 1;
 const DEFAULT_SESSION_ID = 3;
 
 function App() {
