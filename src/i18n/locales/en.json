@@ -54,6 +54,12 @@
     "title": "Item Preview",
     "beingScanned": "This item is being scanned"
   },
+  "weightError": {
+    "title": "Weight Change Detected",
+    "increased": "Unknown item added to cart",
+    "decreased": "Unknown item removed from cart",
+    "scanRequest": "Please scan the item to continue"
+  },
   "common": {
     "outOfStock": "Out of Stock",
     "addToCart": "Add to Cart",

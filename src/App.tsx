@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { NavSection, CartItemResponse, ItemReadResponse } from './types';
+import { NavSection, CartItemResponse, ItemReadResponse, WeightErrorType } from './types';
 import CartView from './components/Cart/CartView';
 import Navbar from './components/Navigation/Navbar';
 import RightPanel from './components/RightPanel/RightPanel';
 import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 import ItemPreview from './components/Preview/ItemPreview';
+import WeightErrorPopup from './components/Preview/WeightErrorPopup';
 import { useTranslation } from 'react-i18next';
 import { CartWebSocket, CartWebSocketMessage } from './services/websocket';
 import { fetchCartItems, fetchItemByBarcode } from './services/api';
@@ -18,6 +19,7 @@ function App() {
   const [cartData, setCartData] = useState<CartItemResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [previewItem, setPreviewItem] = useState<ItemReadResponse | null>(null);
+  const [weightError, setWeightError] = useState<WeightErrorType>(null);
   const webSocketRef = useRef<CartWebSocket | null>(null);
   const { i18n } = useTranslation();
   const isRTL = i18n.dir() === 'rtl';
@@ -62,6 +64,8 @@ function App() {
     
     if (message.type === 'cart-updated') {
       console.log('🛒 Cart updated, refreshing data...');
+      // Clear weight error when cart is updated
+      setWeightError(null);
       // Refresh cart data
       loadCartData();
     } else if (message.type === 'item-read' && barcode) {
@@ -75,6 +79,12 @@ function App() {
         .catch(error => {
           console.error('Failed to fetch preview item:', error);
         });
+    } else if (message.type === 'weight increased') {
+      console.log('⚠️ Weight increased detected');
+      setWeightError('increased');
+    } else if (message.type === 'weight decreased') {
+      console.log('⚠️ Weight decreased detected');
+      setWeightError('decreased');
     }
   }, [loadCartData]);
 
@@ -162,6 +172,9 @@ function App() {
           onClose={handleClosePreview} 
         />
       )}
+      
+      {/* Weight Error Popup */}
+      <WeightErrorPopup errorType={weightError} />
     </div>
   );
 }

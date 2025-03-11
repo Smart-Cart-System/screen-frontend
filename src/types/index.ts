@@ -90,3 +90,6 @@ export interface Session {
 export interface PreviewItem extends ItemReadResponse {
   isPreview: boolean;
 }
+
+// Weight error type
+export type WeightErrorType = 'increased' | 'decreased' | null;
