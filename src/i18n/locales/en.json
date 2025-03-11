@@ -1,0 +1,59 @@
+{
+  "app": {
+    "title": "Smart Cart Screen"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "total": "Total:",
+    "empty": "Your cart is empty"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "paymentMethod": "Payment Method",
+    "creditCard": "Credit Card",
+    "cash": "Cash",
+    "cardNumber": "Card Number",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "completePurchase": "Complete Purchase",
+    "paymentProcessed": "Payment processed!"
+  },
+  "navbar": {
+    "offers": "Today's Offers",
+    "map": "Store Map",
+    "magazine": "Offer Magazine",
+    "checklist": "Shopping List",
+    "help": "Help",
+    "checkout": "Checkout"
+  },
+  "offerSection": {
+    "title": "Today's Offers"
+  },
+  "storeMap": {
+    "title": "Store Map"
+  },
+  "magazine": {
+    "title": "Offer Magazine",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{pageNumber}} of {{numPages}}"
+  },
+  "shoppingList": {
+    "title": "Shopping List",
+    "addNew": "Add new item...",
+    "add": "Add"
+  },
+  "help": {
+    "title": "Help & Support",
+    "needMoreHelp": "Need More Help?",
+    "requestSupport": "Request Support",
+    "supportRequested": "Support request submitted!"
+  },
+  "common": {
+    "outOfStock": "Out of Stock",
+    "addToCart": "Add to Cart",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic"
+  }
+}

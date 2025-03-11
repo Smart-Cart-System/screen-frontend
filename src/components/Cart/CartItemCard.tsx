@@ -1,5 +1,7 @@
 import React from 'react';
 import { CartItem } from '../../types';
+import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
+import { useTranslation } from 'react-i18next';
 
 interface CartItemCardProps {
   item: CartItem;
@@ -7,31 +9,39 @@ interface CartItemCardProps {
 }
 
 const CartItemCard: React.FC<CartItemCardProps> = ({ item, onUpdateQuantity }) => {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'en' | 'ar';
+  
   return (
-    <div className="bg-white rounded-lg shadow p-4 flex items-center">
+    <div className="flex gap-4 p-4 bg-white rounded-lg shadow">
       <img
         src={item.image}
-        alt={item.name}
+        alt={item.name[currentLanguage]}
         className="w-20 h-20 object-cover rounded"
       />
-      <div className="ml-4 flex-grow">
-        <h3 className="font-semibold">{item.name}</h3>
+      <div className="flex-1">
+        <h3 className="font-semibold">{item.name[currentLanguage]}</h3>
         <p className="text-gray-600">${item.price.toFixed(2)}</p>
-        <div className="flex items-center mt-2">
+        <div className="mt-2 flex items-center gap-2">
           <button
-            onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
-            className="bg-gray-200 px-2 py-1 rounded"
+            className="p-1 bg-gray-200 rounded"
+            onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
           >
-            -
+            <MinusIcon className="h-4 w-4" />
           </button>
-          <span className="mx-3">{item.quantity}</span>
+          <span>{item.quantity}</span>
           <button
+            className="p-1 bg-gray-200 rounded"
             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-            className="bg-gray-200 px-2 py-1 rounded"
           >
-            +
+            <PlusIcon className="h-4 w-4" />
           </button>
         </div>
+      </div>
+      <div className="flex items-center">
+        <p className="font-semibold">
+          ${(item.price * item.quantity).toFixed(2)}
+        </p>
       </div>
     </div>
   );

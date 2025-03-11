@@ -1,6 +1,7 @@
 import React from 'react';
 import { SectionProduct } from '../../../types';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 interface SectionProductsProps {
   sectionName: string;
@@ -13,6 +14,9 @@ const SectionProducts: React.FC<SectionProductsProps> = ({
   products,
   onBack,
 }) => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'en' | 'ar';
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -30,17 +34,17 @@ const SectionProducts: React.FC<SectionProductsProps> = ({
           <div key={product.id} className="bg-white rounded-lg shadow p-4">
             <img
               src={product.image}
-              alt={product.name}
+              alt={product.name[currentLanguage]}
               className="w-full h-40 object-cover rounded mb-4"
             />
-            <h3 className="font-semibold">{product.name}</h3>
+            <h3 className="font-semibold">{product.name[currentLanguage]}</h3>
             <p className="text-gray-600">${product.price.toFixed(2)}</p>
             {!product.inStock && (
-              <p className="text-red-500 text-sm mt-2">Out of Stock</p>
+              <p className="text-red-500 text-sm mt-2">{t('common.outOfStock')}</p>
             )}
             {product.inStock && (
               <button className="mt-2 w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Add to Cart
+                {t('common.addToCart')}
               </button>
             )}
           </div>

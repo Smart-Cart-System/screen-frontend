@@ -1,6 +1,9 @@
 export interface CartItem {
   id: string;
-  name: string;
+  name: {
+    en: string;
+    ar: string;
+  };
   price: number;
   quantity: number;
   image: string;
@@ -8,7 +11,10 @@ export interface CartItem {
 
 export interface ShoppingListItem {
   id: string;
-  name: string;
+  name: {
+    en: string;
+    ar: string;
+  };
   completed: boolean;
 }
 
@@ -16,7 +22,10 @@ export type NavSection = 'offers' | 'map' | 'magazine' | 'checklist' | 'help' | 
 
 export interface StoreSection {
   id: string;
-  name: string;
+  name: {
+    en: string;
+    ar: string;
+  };
   coordinates: {
     x: number;
     y: number;
@@ -27,7 +36,10 @@ export interface StoreSection {
 
 export interface SectionProduct {
   id: string;
-  name: string;
+  name: {
+    en: string;
+    ar: string;
+  };
   price: number;
   image: string;
   section: string;
