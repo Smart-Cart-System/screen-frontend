@@ -2,7 +2,7 @@
 type MessageHandler = (message: CartWebSocketMessage) => void;
 
 export interface CartWebSocketMessage {
-  type: 'cart-updated' | 'item-read' | 'connection-established';
+  type: 'cart-updated' | 'item-read' | 'connection-established' | 'weight increased' | 'weight decreased';
   data?: number | string | { barcode: number } | any;
   Message?: string;
 }
