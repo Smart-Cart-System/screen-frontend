@@ -5,7 +5,8 @@
   "cart": {
     "title": "Shopping Cart",
     "total": "Total:",
-    "empty": "Your cart is empty"
+    "empty": "Your cart is empty",
+    "loading": "Loading cart items..."
   },
   "checkout": {
     "title": "Checkout",
@@ -48,6 +49,10 @@
     "needMoreHelp": "Need More Help?",
     "requestSupport": "Request Support",
     "supportRequested": "Support request submitted!"
+  },
+  "preview": {
+    "title": "Item Preview",
+    "beingScanned": "This item is being scanned"
   },
   "common": {
     "outOfStock": "Out of Stock",

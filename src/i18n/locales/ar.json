@@ -5,7 +5,8 @@
   "cart": {
     "title": "سلة التسوق",
     "total": "المجموع:",
-    "empty": "سلة التسوق فارغة"
+    "empty": "سلة التسوق فارغة",
+    "loading": "جاري تحميل العناصر..."
   },
   "checkout": {
     "title": "الدفع",
@@ -48,6 +49,10 @@
     "needMoreHelp": "تحتاج إلى مزيد من المساعدة؟",
     "requestSupport": "طلب الدعم",
     "supportRequested": "تم إرسال طلب الدعم!"
+  },
+  "preview": {
+    "title": "معاينة المنتج",
+    "beingScanned": "يتم مسح هذا المنتج"
   },
   "common": {
     "outOfStock": "غير متوفر",
