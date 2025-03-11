@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSwitcher: React.FC = () => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
+
+  useEffect(() => {
+    // Ensure English is set on component mount if no language is selected
+    if (!currentLanguage || currentLanguage === 'undefined') {
+      changeLanguage('en');
+    }
+  }, []);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

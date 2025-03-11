@@ -24,11 +24,16 @@ i18n
   // init i18next
   .init({
     resources,
+    lng: 'en', // Set default language to English
     fallbackLng: 'en',
     debug: true,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     }
   });
+
+// Ensure the initial direction is set
+document.documentElement.dir = i18n.dir();
+document.documentElement.lang = i18n.language;
 
 export default i18n;
