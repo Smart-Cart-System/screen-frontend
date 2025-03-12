@@ -5,8 +5,8 @@ export const mockOffers = [
       en: 'Fresh Organic Bananas',
       ar: 'موز عضوي طازج'
     },
-    price: 2.99,
-    image: 'https://placehold.co/200x200?text=Bananas',
+    price: 20.99,
+    image: 'https://i5.walmartimages.com/seo/Marketside-Fresh-Organic-Bananas-Bunch_4b15d1c6-03e7-489b-96cb-7d4b1edeb927.042464e5bc52fa0421f255d04ec525a4.jpeg',
     discount: {
       en: '20% off',
       ar: 'خصم 20%'
@@ -18,8 +18,8 @@ export const mockOffers = [
       en: 'Whole Grain Bread',
       ar: 'خبز القمح الكامل'
     },
-    price: 3.49,
-    image: 'https://placehold.co/200x200?text=Bread',
+    price: 59.49,
+    image: 'https://thebusybaker.ca/wp-content/uploads/2015/02/easy-whole-grain-sandwich-bread-fb-ig-6-scaled.jpg',
     discount: {
       en: 'Buy 1 Get 1 Free',
       ar: 'اشتر 1 واحصل على 1 مجاناً'
