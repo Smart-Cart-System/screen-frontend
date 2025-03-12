@@ -65,6 +65,7 @@
     "addToCart": "Add to Cart",
     "language": "Language",
     "english": "English",
-    "arabic": "Arabic"
+    "arabic": "Arabic",
+    "currency": "EGP"
   }
 }

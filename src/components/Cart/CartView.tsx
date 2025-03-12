@@ -11,6 +11,9 @@ interface CartViewProps {
 const CartView: React.FC<CartViewProps> = ({ cartData, isLoading }) => {
   const { t } = useTranslation();
   
+  // Get the currency symbol from i18n
+  const currencySymbol = t('common.currency');
+  
   const renderContent = () => {
     if (isLoading) {
       return <p className="text-gray-500">{t('cart.loading')}</p>;
@@ -39,7 +42,7 @@ const CartView: React.FC<CartViewProps> = ({ cartData, isLoading }) => {
       <div className="sticky bottom-0 bg-white border-t shadow-lg p-6">
         <div className="text-xl font-bold flex justify-between items-center">
           <span>{t('cart.total')}</span>
-          <span>${cartData?.total_price?.toFixed(2) || '0.00'}</span>
+          <span>{(cartData?.total_price?.toFixed(2) || '0.00')} {currencySymbol}</span>
         </div>
       </div>
     </div>

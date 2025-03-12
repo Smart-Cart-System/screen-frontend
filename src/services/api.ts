@@ -1,5 +1,5 @@
 // API service for cart and item operations
-import { CartItemResponse, ItemReadResponse } from "../types";
+import { CartItemResponse, ItemReadResponse, ApiCartItem } from "../types";
 
 const API_BASE_URL = "https://duckycart.me";
 
@@ -18,6 +18,17 @@ export const fetchCartItems = async (sessionId: number): Promise<CartItemRespons
     // Try to parse JSON
     const data = text ? JSON.parse(text) : {};
     console.log('Parsed data:', data);
+    
+    // Process items to ensure image_url is used when available
+    if (data.items && Array.isArray(data.items)) {
+      data.items = data.items.map((item: ApiCartItem) => {
+        if (item.product) {
+          // No need to modify anything; the type definitions now handle image_url
+          return item;
+        }
+        return item;
+      });
+    }
     
     // Return with fallbacks for missing properties
     return {
@@ -39,7 +50,12 @@ export const fetchCartItems = async (sessionId: number): Promise<CartItemRespons
 export const fetchItemByBarcode = async (barcode: number): Promise<ItemReadResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/items/read/${barcode}`);
-    return await response.json();
+    const data = await response.json();
+    
+    // Log the received data to confirm image_url is present
+    console.log('Item data received:', data);
+    
+    return data;
   } catch (error) {
     console.error('Error fetching item:', error);
     throw error;

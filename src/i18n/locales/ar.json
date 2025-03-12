@@ -65,6 +65,7 @@
     "addToCart": "أضف إلى السلة",
     "language": "اللغة",
     "english": "الإنجليزية",
-    "arabic": "العربية"
+    "arabic": "العربية",
+    "currency": "ج.م."
   }
 }

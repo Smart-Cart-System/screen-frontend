@@ -67,7 +67,9 @@ export interface ApiProduct {
   description_ar: string;
   unit_price: number;
   product_size: string;
-  image?: string; // Assuming this might be available
+  barcode?: number;
+  image_url?: string; // Added image_url field
+  image?: string; // Keeping the old field for backwards compatibility
 }
 
 export interface ItemReadResponse {
@@ -76,6 +78,8 @@ export interface ItemReadResponse {
   description_ar: string;
   unit_price: number;
   product_size: string;
+  barcode?: number;
+  image_url?: string;
 }
 
 export interface Session {

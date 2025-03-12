@@ -16,6 +16,12 @@ const ItemPreview: React.FC<ItemPreviewProps> = ({ item, onClose }) => {
 
   const itemName = currentLanguage === 'en' ? item.description : item.description_ar;
   const placeholderImage = 'https://placehold.co/300x300?text=Preview';
+  
+  // Use image_url if available, fallback to placeholder
+  const imageUrl = item.image_url || placeholderImage;
+  
+  // Get the currency symbol from i18n
+  const currencySymbol = t('common.currency');
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -29,7 +35,7 @@ const ItemPreview: React.FC<ItemPreviewProps> = ({ item, onClose }) => {
         
         <div className="flex flex-col items-center space-y-4">
           <img
-            src={placeholderImage} 
+            src={imageUrl} 
             alt={itemName}
             className="w-40 h-40 object-contain rounded"
           />
@@ -37,7 +43,7 @@ const ItemPreview: React.FC<ItemPreviewProps> = ({ item, onClose }) => {
           <div className="w-full text-center">
             <h4 className="font-medium text-lg">{itemName}</h4>
             <p className="text-gray-600">{item.product_size}</p>
-            <p className="text-lg font-bold mt-2">${item.unit_price.toFixed(2)}</p>
+            <p className="text-lg font-bold mt-2">{item.unit_price.toFixed(2)} {currencySymbol}</p>
           </div>
           
           <div className="mt-4 text-center text-sm text-gray-500">

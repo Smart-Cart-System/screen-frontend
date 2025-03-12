@@ -17,6 +17,9 @@ const SectionProducts: React.FC<SectionProductsProps> = ({
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language as 'en' | 'ar';
   
+  // Get the currency symbol from i18n
+  const currencySymbol = t('common.currency');
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -38,7 +41,7 @@ const SectionProducts: React.FC<SectionProductsProps> = ({
               className="w-full h-40 object-cover rounded mb-4"
             />
             <h3 className="font-semibold">{product.name[currentLanguage]}</h3>
-            <p className="text-gray-600">${product.price.toFixed(2)}</p>
+            <p className="text-gray-600">{product.price.toFixed(2)} {currencySymbol}</p>
             {!product.inStock && (
               <p className="text-red-500 text-sm mt-2">{t('common.outOfStock')}</p>
             )}
