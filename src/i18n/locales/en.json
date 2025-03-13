@@ -28,7 +28,8 @@
     "checkout": "Checkout"
   },
   "offerSection": {
-    "title": "Today's Offers"
+    "title": "Today's Offers",
+    "noPromotions": "No promotions available at the moment"
   },
   "storeMap": {
     "title": "Store Map"

@@ -1,7 +1,7 @@
 // API service for cart and item operations
-import { CartItemResponse, ItemReadResponse, ApiCartItem } from "../types";
+import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion } from "../types";
 
-const API_BASE_URL = "https://duckycart.me";
+const API_BASE_URL = "https://api.duckycart.me";
 
 export const fetchCartItems = async (sessionId: number): Promise<CartItemResponse> => {
   console.log(`Fetching cart items for session: ${sessionId}`);
@@ -59,5 +59,25 @@ export const fetchItemByBarcode = async (barcode: number): Promise<ItemReadRespo
   } catch (error) {
     console.error('Error fetching item:', error);
     throw error;
+  }
+};
+
+export const fetchPromotions = async (): Promise<Promotion[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/promotions/`);
+    
+    // Get response as text first for debugging
+    const text = await response.text();
+    console.log('Promotions response text:', text);
+    
+    // Parse the JSON
+    const data = text ? JSON.parse(text) : [];
+    console.log('Parsed promotions data:', data);
+    
+    // Return the promotions array or an empty array if not found
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching promotions:', error);
+    return []; // Return empty array on error
   }
 };
