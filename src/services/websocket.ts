@@ -24,7 +24,7 @@ export class CartWebSocket {
     if (this.socket?.readyState === WebSocket.OPEN) return;
     
     try {
-      const wsUrl = `wss://duckycart.me/ws/${this.sessionId}`;
+      const wsUrl = `wss://api.duckycart.me/ws/${this.sessionId}`;
       console.log(`Connecting to WebSocket at: ${wsUrl}`);
       this.socket = new WebSocket(wsUrl);
       

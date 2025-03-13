@@ -28,7 +28,8 @@
     "checkout": "الدفع"
   },
   "offerSection": {
-    "title": "عروض اليوم"
+    "title": "عروض اليوم",
+    "noPromotions": "لا توجد عروض متاحة حالياً"
   },
   "storeMap": {
     "title": "خريطة المتجر"

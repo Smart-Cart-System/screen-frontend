@@ -97,3 +97,23 @@ export interface PreviewItem extends ItemReadResponse {
 
 // Weight error type
 export type WeightErrorType = 'increased' | 'decreased' | null;
+
+// Promotion interface based on API data
+export interface Promotion {
+  index: number;
+  item_no_: number;
+  promotion_description: string;
+  discount_amount: number;
+  promotion_starting_date: string;
+  promotion_ending_date: string;
+  product_description: string;
+  product_description_ar: string;
+  unit_price: number;
+  discounted_price: number;
+  discount_percentage: number;
+  image_url: string | null;
+}
+
+export interface PromotionResponse {
+  promotions: Promotion[];
+}
