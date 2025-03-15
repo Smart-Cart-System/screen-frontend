@@ -2,13 +2,25 @@
 import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion } from "../types";
 
 const API_BASE_URL = "https://api.duckycart.me";
+const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvbWFyIiwiZXhwIjoxNzQyMDg3NjcyfQ.G-xw3K8r4e2lc-ZD3UpaM9H3pgcF3xrrhepBgZdFXuQ";
+
+// Common headers for all API requests
+const getHeaders = () => {
+  return {
+    'Authorization': `Bearer ${AUTH_TOKEN}`,
+    'Content-Type': 'application/json'
+  };
+};
 
 export const fetchCartItems = async (sessionId: number): Promise<CartItemResponse> => {
   console.log(`Fetching cart items for session: ${sessionId}`);
   
   try {
-    // Direct API call with no fancy options
-    const response = await fetch(`${API_BASE_URL}/cart-items/session/${sessionId}`);
+    // API call with auth headers
+    const response = await fetch(
+      `${API_BASE_URL}/cart-items/session/${sessionId}`, 
+      { headers: getHeaders() }
+    );
     console.log('Response status:', response.status);
     
     // Get response as text first
@@ -49,7 +61,10 @@ export const fetchCartItems = async (sessionId: number): Promise<CartItemRespons
 
 export const fetchItemByBarcode = async (barcode: number): Promise<ItemReadResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/items/read/${barcode}`);
+    const response = await fetch(
+      `${API_BASE_URL}/items/read/${barcode}`,
+      { headers: getHeaders() }
+    );
     const data = await response.json();
     
     // Log the received data to confirm image_url is present
@@ -64,7 +79,10 @@ export const fetchItemByBarcode = async (barcode: number): Promise<ItemReadRespo
 
 export const fetchPromotions = async (): Promise<Promotion[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/promotions/`);
+    const response = await fetch(
+      `${API_BASE_URL}/promotions/`,
+      { headers: getHeaders() }
+    );
     
     // Get response as text first for debugging
     const text = await response.text();
