@@ -6,15 +6,15 @@ import RightPanel from './components/RightPanel/RightPanel';
 import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 import ItemPreview from './components/Preview/ItemPreview';
 import WeightErrorPopup from './components/Preview/WeightErrorPopup';
+import ConfigScreen from './components/ConfigScreen';
+import SessionInitializer from './components/SessionInitializer';
 import { useTranslation } from 'react-i18next';
 import { CartWebSocket, CartWebSocketMessage } from './services/websocket';
 import { fetchCartItems, fetchItemByBarcode } from './services/api';
-
-// For testing purposes - these would normally come from authentication
-// const DEFAULT_CART_ID = 1;
-const DEFAULT_SESSION_ID = 3;
+import { useCart } from './hooks/useCart';
 
 function App() {
+  const { cartId, sessionId, token } = useCart();
   const [activeSection, setActiveSection] = useState<NavSection>('offers');
   const [cartData, setCartData] = useState<CartItemResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,19 +23,27 @@ function App() {
   const webSocketRef = useRef<CartWebSocket | null>(null);
   const { i18n } = useTranslation();
   const isRTL = i18n.dir() === 'rtl';
+  // Debug logging
+  console.log('App render - cartId:', cartId, 'sessionId:', sessionId, 'token:', token);  console.log('App render - current state:', {
+    hasCartId: !!cartId,
+    hasSessionId: !!sessionId,
+    hasToken: !!token,
+    cartDataItems: cartData?.items?.length || 0
+  });
 
   // Set the correct document direction when language changes
   useEffect(() => {
     document.documentElement.dir = i18n.dir();
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
-
   // Load cart data function
   const loadCartData = useCallback(async () => {
+    if (!sessionId) return;
+    
     console.log('🛒 Loading cart data...');
     setIsLoading(true);
     try {
-      const data = await fetchCartItems(DEFAULT_SESSION_ID);
+      const data = await fetchCartItems(parseInt(sessionId, 10));
       console.log('Cart data loaded:', data);
       setCartData(data);
     } catch (error) {
@@ -43,7 +51,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [sessionId]);
 
   // WebSocket message handler
   const handleWebSocketMessage = useCallback((message: CartWebSocketMessage) => {
@@ -86,33 +94,33 @@ function App() {
       console.log('⚠️ Weight decreased detected');
       setWeightError('decreased');
     }
-  }, [loadCartData]);
-
-  // Initialize WebSocket connection
+  }, [loadCartData]);  // Initialize WebSocket connection
   useEffect(() => {
-    console.log('🔌 Initializing WebSocket connection...');
+    if (!sessionId) return;
     
-    // Initialize WebSocket only if it hasn't been initialized yet
-    if (!webSocketRef.current) {
-      const ws = new CartWebSocket(DEFAULT_SESSION_ID);
-      webSocketRef.current = ws;
-      
-      // Add the message handler to the WebSocket
-      ws.addMessageHandler(handleWebSocketMessage);
-      console.log('Added message handler to WebSocket');
-      
-      // Connect after the handler is set up
-      ws.connect();
-      console.log('WebSocket connect called');
-    } else {
-      console.log('WebSocket already initialized, reusing existing connection');
-      // If WebSocket is already initialized, just add the handler
-      webSocketRef.current.addMessageHandler(handleWebSocketMessage);
+    console.log('🔌 Initializing WebSocket connection for session:', sessionId);
+    
+    // Always disconnect existing WebSocket if it exists
+    if (webSocketRef.current) {
+      console.log('Disconnecting existing WebSocket');
+      webSocketRef.current.disconnect();
+      webSocketRef.current = null;
     }
+    
+    // Create new WebSocket connection with current session ID
+    const ws = new CartWebSocket(parseInt(sessionId, 10));
+    webSocketRef.current = ws;
+    
+    // Add the message handler to the WebSocket
+    ws.addMessageHandler(handleWebSocketMessage);
+    console.log('Added message handler to WebSocket');
+    
+    // Connect after the handler is set up
+    ws.connect();
+    console.log('WebSocket connect called for session:', sessionId);
     
     // Fetch initial cart data
     loadCartData();
-    
     // For testing purposes, log a message every 5 seconds to verify component is still alive
     const intervalId = setInterval(() => {
       if (webSocketRef.current?.handlers?.length === 0) {
@@ -132,11 +140,23 @@ function App() {
         }
       }
     };
-  }, [handleWebSocketMessage, loadCartData]);
-
+  }, [handleWebSocketMessage, loadCartData, sessionId]);
   const handleClosePreview = () => {
     setPreviewItem(null);
   };
+
+  // Conditional rendering AFTER all hooks have been called
+  if (!cartId) {
+    console.log('No cartId, showing ConfigScreen');
+    return <ConfigScreen />;
+  }
+
+  if (!sessionId) {
+    console.log('No sessionId, showing SessionInitializer');
+    return <SessionInitializer cartId={cartId} />;
+  }
+
+  console.log('Both cartId and sessionId available, showing main cart interface');
 
   return (
     <div className="flex h-screen">
