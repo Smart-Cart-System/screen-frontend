@@ -2,12 +2,18 @@
 import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion } from "../types";
 
 const API_BASE_URL = "https://api.duckycart.me";
-const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvbWFyIiwiZXhwIjoxNzQyMDg3NjcyfQ.G-xw3K8r4e2lc-ZD3UpaM9H3pgcF3xrrhepBgZdFXuQ";
+
+// Get the authentication token from localStorage
+const getAuthToken = (): string => {
+  const token = localStorage.getItem('auth_token');
+  // Fallback to hardcoded token for testing if no real token is available
+  return token || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvbWFyIiwiZXhwIjoxNzQ1OTI3MjIyfQ.2uCMiozrIWseDpuTVIxBv4949m7Y4JhuvdUtMa6WEM8";
+};
 
 // Common headers for all API requests
 const getHeaders = () => {
   return {
-    'Authorization': `Bearer ${AUTH_TOKEN}`,
+    'Authorization': `Bearer ${getAuthToken()}`,
     'Content-Type': 'application/json'
   };
 };
