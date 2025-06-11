@@ -21,10 +21,8 @@
     "noSession": "No active session. Please start a new session.",
     "creationFailed": "Failed to create payment. Please try again."
   },
-  "navbar": {
-    "offers": "Today's Offers",
+  "navbar": {    "offers": "Today's Offers",
     "map": "Store Map",
-    "magazine": "Offer Magazine",
     "checklist": "Shopping List",
     "help": "Help",
     "checkout": "Checkout"
@@ -32,16 +30,25 @@
   "offerSection": {
     "title": "Today's Offers",
     "noPromotions": "No promotions available at the moment"
-  },
-  "storeMap": {
-    "title": "Store Map"
-  },
-  "magazine": {
-    "title": "Offer Magazine",
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {{pageNumber}} of {{numPages}}"
-  },
+  },  "storeMap": {
+    "title": "Store Map",
+    "loading": "Loading store map...",
+    "error": "Failed to load store map",
+    "retry": "Retry",
+    "navigation": "Navigation",
+    "navigateToPromotion": "Navigate to Promotion",
+    "calculating": "Calculating...",
+    "pathFound": "Path found!",
+    "distance": "Distance",
+    "steps": "steps",
+    "promotionsAlongPath": "Promotions along path",
+    "legend": "Legend",
+    "walkableAisle": "Walkable Aisle",
+    "nonWalkable": "Non-walkable",
+    "selected": "Selected",
+    "navigationPath": "Navigation Path",
+    "selectedAisle": "Selected Aisle",
+    "aisleInfo": "View aisle details and location on the map above. To navigate to promotions, use the \"Today's Offers\" section."  },
   "shoppingList": {
     "title": "Shopping List",
     "addNew": "Add new item...",

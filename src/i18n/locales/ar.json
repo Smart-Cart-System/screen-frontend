@@ -21,10 +21,8 @@
     "noSession": "لا توجد جلسة نشطة. يرجى بدء جلسة جديدة.",
     "creationFailed": "فشل في إنشاء الدفعة. يرجى المحاولة مرة أخرى."
   },
-  "navbar": {
-    "offers": "عروض اليوم",
+  "navbar": {    "offers": "عروض اليوم",
     "map": "خريطة المتجر",
-    "magazine": "مجلة العروض",
     "checklist": "قائمة التسوق",
     "help": "المساعدة",
     "checkout": "الدفع"
@@ -32,16 +30,25 @@
   "offerSection": {
     "title": "عروض اليوم",
     "noPromotions": "لا توجد عروض متاحة حالياً"
-  },
-  "storeMap": {
-    "title": "خريطة المتجر"
-  },
-  "magazine": {
-    "title": "مجلة العروض",
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "صفحة {{pageNumber}} من {{numPages}}"
-  },
+  },  "storeMap": {
+    "title": "خريطة المتجر",
+    "loading": "جاري تحميل خريطة المتجر...",
+    "error": "فشل في تحميل خريطة المتجر",
+    "retry": "إعادة المحاولة",
+    "navigation": "التنقل",
+    "navigateToPromotion": "الانتقال إلى العرض",
+    "calculating": "جاري الحساب...",
+    "pathFound": "تم العثور على المسار!",
+    "distance": "المسافة",
+    "steps": "خطوات",
+    "promotionsAlongPath": "العروض على طول المسار",
+    "legend": "دليل الخريطة",
+    "walkableAisle": "ممر قابل للمشي",
+    "nonWalkable": "غير قابل للمشي",
+    "selected": "محدد",
+    "navigationPath": "مسار التنقل",
+    "selectedAisle": "الممر المحدد",
+    "aisleInfo": "عرض تفاصيل الممر والموقع على الخريطة أعلاه. للانتقال إلى العروض، استخدم قسم \"عروض اليوم\"."  },
   "shoppingList": {
     "title": "قائمة التسوق",
     "addNew": "أضف عنصراً جديداً...",

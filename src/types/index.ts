@@ -18,7 +18,7 @@ export interface ShoppingListItem {
   completed: boolean;
 }
 
-export type NavSection = 'offers' | 'map' | 'magazine' | 'checklist' | 'help' | 'checkout';
+export type NavSection = 'offers' | 'map' | 'checklist' | 'help' | 'checkout';
 
 export interface StoreSection {
   id: string;
@@ -118,6 +118,24 @@ export interface PromotionResponse {
   promotions: Promotion[];
 }
 
+// Promotion Types
+export interface PromotionItem {
+  index: number;
+  item_no_: number;
+  promotion_description: string;
+  discount_amount: number;
+  promotion_starting_date: string;
+  promotion_ending_date: string;
+  product_description: string;
+  product_description_ar: string;
+  unit_price: number;
+  discounted_price: number;
+  discount_percentage: number;
+  image_url: string;
+  aisle_id: number;
+  aisle_name: string;
+}
+
 // Payment related types
 export interface PaymentRequest {
   payment_method: 'card' | 'cash';
@@ -147,4 +165,34 @@ export interface PaymentWebSocketMessage {
     session_id: number;
     message?: string;
   };
+}
+
+// Store Map Types
+export interface StorePosition {
+  id: number;
+  x: number;
+  y: number;
+  is_walkable: boolean;
+  aisle_id: number;
+}
+
+export interface StoreMapData {
+  positions: StorePosition[];
+  connections: Array<[number, number]>;
+}
+
+export interface NavigationAisle {
+  aisle_id: number;
+  name: string;
+  x: number;
+  y: number;
+  promotions_count: number;
+}
+
+export interface NavigationPath {
+  path: NavigationAisle[];
+  total_distance: number;
+  total_promotions: number;
+  target_promotion_id: number;
+  target_aisle_id: number;
 }
