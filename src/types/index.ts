@@ -117,3 +117,34 @@ export interface Promotion {
 export interface PromotionResponse {
   promotions: Promotion[];
 }
+
+// Payment related types
+export interface PaymentRequest {
+  payment_method: 'card' | 'cash';
+  card_details?: {
+    card_number: string;
+    expiry_date: string;
+    cvv: string;
+  };
+}
+
+export interface PaymentResponse {
+  payment_id: string;
+  session_id: number;
+  amount: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  payment_method: 'card' | 'cash';
+  created_at: string;
+}
+
+export type PaymentStatus = 'idle' | 'processing' | 'success' | 'failed' | 'retrying';
+
+// WebSocket payment message types
+export interface PaymentWebSocketMessage {
+  type: 'payment-success' | 'payment-failed' | 'payment-retrying';
+  data?: {
+    payment_id: string;
+    session_id: number;
+    message?: string;
+  };
+}
