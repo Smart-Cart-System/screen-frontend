@@ -1,5 +1,5 @@
 // API service for cart and item operations
-import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion } from "../types";
+import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequest, PaymentResponse } from "../types";
 
 const API_BASE_URL = "https://api.duckycart.me";
 
@@ -103,5 +103,29 @@ export const fetchPromotions = async (): Promise<Promotion[]> => {
   } catch (error) {
     console.error('Error fetching promotions:', error);
     return []; // Return empty array on error
+  }
+};
+
+export const createPayment = async (sessionId: number, paymentData: PaymentRequest): Promise<PaymentResponse> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/payment/create-payment/${sessionId}`,
+      {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(paymentData)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Payment creation failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('Payment created successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error creating payment:', error);
+    throw error;
   }
 };

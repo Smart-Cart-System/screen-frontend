@@ -7,17 +7,19 @@
     "total": "المجموع:",
     "empty": "سلة التسوق فارغة",
     "loading": "جاري تحميل العناصر..."
-  },
-  "checkout": {
+  },  "checkout": {
     "title": "الدفع",
-    "paymentMethod": "طريقة الدفع",
-    "creditCard": "بطاقة ائتمان",
-    "cash": "نقداً",
-    "cardNumber": "رقم البطاقة",
-    "expiryDate": "تاريخ الانتهاء",
-    "cvv": "رمز التحقق",
-    "completePurchase": "إتمام الشراء",
-    "paymentProcessed": "تم معالجة الدفع!"
+    "createPayment": "إنشاء دفعة",
+    "creating": "جاري إنشاء الدفعة...",
+    "paymentCreated": "تم إنشاء الدفعة!",
+    "completeOnPhone": "أكمل الدفع من خلال تطبيق الجوال",
+    "waitingForPayment": "في انتظار تأكيد الدفع...",
+    "paymentSuccess": "تم الدفع بنجاح!",
+    "paymentFailed": "فشل الدفع. يرجى المحاولة مرة أخرى.",
+    "paymentRetrying": "جاري إعادة المحاولة...",
+    "createAnother": "إنشاء دفعة أخرى",
+    "noSession": "لا توجد جلسة نشطة. يرجى بدء جلسة جديدة.",
+    "creationFailed": "فشل في إنشاء الدفعة. يرجى المحاولة مرة أخرى."
   },
   "navbar": {
     "offers": "عروض اليوم",

@@ -7,17 +7,19 @@
     "total": "Total:",
     "empty": "Your cart is empty",
     "loading": "Loading cart items..."
-  },
-  "checkout": {
+  },  "checkout": {
     "title": "Checkout",
-    "paymentMethod": "Payment Method",
-    "creditCard": "Credit Card",
-    "cash": "Cash",
-    "cardNumber": "Card Number",
-    "expiryDate": "Expiry Date",
-    "cvv": "CVV",
-    "completePurchase": "Complete Purchase",
-    "paymentProcessed": "Payment processed!"
+    "createPayment": "Create Payment",
+    "creating": "Creating Payment...",
+    "paymentCreated": "Payment Created!",
+    "completeOnPhone": "Complete your payment on your mobile app",
+    "waitingForPayment": "Waiting for payment confirmation...",
+    "paymentSuccess": "Payment completed successfully!",
+    "paymentFailed": "Payment failed. Please try again.",
+    "paymentRetrying": "Retrying payment...",
+    "createAnother": "Create Another Payment",
+    "noSession": "No active session. Please start a new session.",
+    "creationFailed": "Failed to create payment. Please try again."
   },
   "navbar": {
     "offers": "Today's Offers",
