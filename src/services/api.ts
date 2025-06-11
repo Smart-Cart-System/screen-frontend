@@ -129,3 +129,187 @@ export const createPayment = async (sessionId: number, paymentData: PaymentReque
     throw error;
   }
 };
+
+// Store Map API functions
+export const fetchStoreMap = async (): Promise<{
+  positions: Array<{
+    id: number;
+    x: number;
+    y: number;
+    is_walkable: boolean;
+    aisle_id: number;
+  }>;
+  connections: Array<[number, number]>;
+}> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/layout/map`,
+      { headers: getHeaders() }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch store map: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Store map fetched successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching store map:', error);
+    throw error;
+  }
+};
+
+export const navigateToPromotion = async (sessionId: number, targetPromotionId: number): Promise<{
+  path: Array<{
+    aisle_id: number;
+    name: string;
+    x: number;
+    y: number;
+    promotions_count: number;
+  }>;
+  total_distance: number;
+  total_promotions: number;
+  target_promotion_id: number;
+  target_aisle_id: number;
+}> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/layout/navigate`,
+      {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({
+          session_id: sessionId,
+          target_promotion_id: targetPromotionId
+        })
+      }
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Could not create navigation path. Check that session has a location and promotion exists.');
+      }
+      throw new Error(`Failed to calculate navigation path: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Navigation path calculated successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error calculating navigation path:', error);
+    throw error;
+  }
+};
+
+// Promotions API functions
+export const fetchAllPromotions = async (skip: number = 0, limit: number = 100): Promise<Array<{
+  index: number;
+  item_no_: number;
+  promotion_description: string;
+  discount_amount: number;
+  promotion_starting_date: string;
+  promotion_ending_date: string;
+  product_description: string;
+  product_description_ar: string;
+  unit_price: number;
+  discounted_price: number;
+  discount_percentage: number;
+  image_url: string;
+  aisle_id: number;
+  aisle_name: string;
+}>> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/promotions/?skip=${skip}&limit=${limit}`,
+      { headers: getHeaders() }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch promotions: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('All promotions fetched successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching promotions:', error);
+    throw error;
+  }
+};
+
+export const fetchSessionPromotions = async (sessionId: number, skip: number = 0, limit: number = 100): Promise<Array<{
+  index: number;
+  item_no_: number;
+  promotion_description: string;
+  discount_amount: number;
+  promotion_starting_date: string;
+  promotion_ending_date: string;
+  product_description: string;
+  product_description_ar: string;
+  unit_price: number;
+  discounted_price: number;
+  discount_percentage: number;
+  image_url: string;
+  aisle_id: number;
+  aisle_name: string;
+}>> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/promotions/session/${sessionId}?skip=${skip}&limit=${limit}`,
+      { headers: getHeaders() }
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('No location found for this session');
+      }
+      throw new Error(`Failed to fetch session promotions: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Session promotions fetched successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching session promotions:', error);
+    throw error;
+  }
+};
+
+export const fetchAislePromotions = async (aisleId: number): Promise<Array<{
+  index: number;
+  item_no_: number;
+  promotion_description: string;
+  discount_amount: number;
+  promotion_starting_date: string;
+  promotion_ending_date: string;
+  product_description: string;
+  product_description_ar: string;
+  unit_price: number;
+  discounted_price: number;
+  discount_percentage: number;
+  image_url: string;
+  aisle_id: number;
+  aisle_name: string;
+}>> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/promotions/aisle/${aisleId}`,
+      { headers: getHeaders() }
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Aisle not found');
+      }
+      throw new Error(`Failed to fetch aisle promotions: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Aisle promotions fetched successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching aisle promotions:', error);
+    throw error;
+  }
+};

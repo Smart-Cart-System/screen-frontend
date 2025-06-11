@@ -2,7 +2,6 @@ import React from 'react';
 import { NavSection } from '../../types';
 import OfferSection from './sections/OfferSection';
 import StoreMap from './sections/StoreMap';
-import OfferMagazine from './sections/OfferMagazine';
 import ShoppingList from './sections/ShoppingList';
 import HelpSection from './sections/HelpSection';
 import Checkout from './sections/Checkout';
@@ -15,15 +14,12 @@ interface RightPanelProps {
 const RightPanel: React.FC<RightPanelProps> = ({ activeSection }) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.dir() === 'rtl';
-  
-  const renderSection = () => {
+    const renderSection = () => {
     switch (activeSection) {
       case 'offers':
         return <OfferSection />;
       case 'map':
         return <StoreMap />;
-      case 'magazine':
-        return <OfferMagazine />;
       case 'checklist':
         return <ShoppingList />;
       case 'help':
