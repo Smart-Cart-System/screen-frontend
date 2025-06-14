@@ -21,6 +21,39 @@
     "noSession": "لا توجد جلسة نشطة. يرجى بدء جلسة جديدة.",
     "creationFailed": "فشل في إنشاء الدفعة. يرجى المحاولة مرة أخرى."
   },
+  "thankYou": {
+    "title": "شكراً لك!",
+    "subtitle": "انتهت جلسة التسوق الخاصة بك",
+    "services": {
+      "convenient": "تجربة تسوق مريحة",
+      "timeEfficient": "مسح سريع وفعال للعربة",
+      "multilingual": "دعم متعدد اللغات"
+    },
+    "nextCustomer": "جاري التحضير للعميل التالي خلال",
+    "continue": "المتابعة الآن"
+  },
+  "feedback": {
+    "howWasExperience": "كيف كانت تجربة التسوق؟",
+    "selectSatisfaction": "يرجى اختيار مستوى رضاك العام",
+    "tellUsMore": "أخبرنا المزيد عن تجربتك",
+    "selectReasons": "اختر كل ما ينطبق (اختياري)",
+    "additionalComments": "تعليقات إضافية (اختياري)",
+    "commentsPlaceholder": "شارك أي أفكار إضافية حول تجربتك...",
+    "satisfaction": {
+      "sad": "غير راضي",
+      "neutral": "محايد",
+      "happy": "راضي"
+    },
+    "thankYou": "شكراً لك!",
+    "submitted": "تم إرسال ملاحظاتك بنجاح.",
+    "loading": "جاري تحميل خيارات الملاحظات...",
+    "submitting": "جاري الإرسال...",
+    "submit": "إرسال الملاحظات",
+    "skip": "تخطي",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "giveFeedback": "إعطاء ملاحظات"
+  },
   "navbar": {    "offers": "عروض اليوم",
     "map": "خريطة المتجر",
     "checklist": "قائمة التسوق",

@@ -20,6 +20,31 @@ export interface ShoppingListItem {
 
 export type NavSection = 'offers' | 'map' | 'checklist' | 'help' | 'checkout';
 
+// Feedback System Types
+export type SatisfactionLevel = 'sad' | 'neutral' | 'happy';
+
+export interface FeedbackItem {
+  id: number;
+  text: string;
+  category: SatisfactionLevel;
+}
+
+export interface FeedbackSubmission {
+  session_id: number;
+  satisfaction: SatisfactionLevel;
+  selected_item_ids: number[];
+  additional_comments?: string;
+}
+
+export interface FeedbackResponse {
+  id: number;
+  session_id: number;
+  satisfaction: SatisfactionLevel;
+  additional_comments?: string;
+  created_at: string;
+  selected_items: FeedbackItem[];
+}
+
 export interface StoreSection {
   id: string;
   name: {

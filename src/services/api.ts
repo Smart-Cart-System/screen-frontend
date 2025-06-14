@@ -1,5 +1,5 @@
 // API service for cart and item operations
-import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequest, PaymentResponse } from "../types";
+import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequest, PaymentResponse, FeedbackItem, FeedbackSubmission, FeedbackResponse, SatisfactionLevel } from "../types";
 
 const API_BASE_URL = "https://api.duckycart.me";
 
@@ -336,6 +336,67 @@ export const fetchAislePromotions = async (aisleId: number): Promise<Array<{
     return data;
   } catch (error) {
     console.error('Error fetching aisle promotions:', error);
+    throw error;
+  }
+};
+
+// Feedback API Functions
+export const fetchFeedbackItems = async (category?: SatisfactionLevel): Promise<FeedbackItem[]> => {
+  try {
+    const url = category 
+      ? `${API_BASE_URL}/feedback/items?category=${category}`
+      : `${API_BASE_URL}/feedback/items`;
+    
+    const response = await fetch(url, { headers: getHeaders() });
+    await handleApiResponse(response);
+    
+    const data = await response.json();
+    console.log('Feedback items fetched:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching feedback items:', error);
+    throw error;
+  }
+};
+
+export const submitFeedback = async (feedback: FeedbackSubmission): Promise<FeedbackResponse> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/feedback/`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(feedback)
+    });
+    
+    await handleApiResponse(response);
+    
+    const data = await response.json();
+    console.log('Feedback submitted successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error submitting feedback:', error);
+    throw error;
+  }
+};
+
+export const getFeedbackForSession = async (sessionId: number): Promise<FeedbackResponse | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/feedback/session/${sessionId}`,
+      { headers: getHeaders() }
+    );
+    
+    if (response.status === 404) {
+      console.log('No feedback found for session:', sessionId);
+      return null;
+    }
+    
+    await handleApiResponse(response);
+    
+    const data = await response.json();
+    console.log('Feedback retrieved for session:', data);
+    return data;
+  } catch (error) {
+    console.error('Error retrieving feedback:', error);
     throw error;
   }
 };
