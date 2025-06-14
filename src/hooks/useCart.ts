@@ -7,6 +7,7 @@ interface CartHook {
   setSessionId: (id: string) => void;
   token: string | null;
   setToken: (token: string) => void;
+  resetSession: () => void;
 }
 
 export const useCart = (): CartHook => {
@@ -72,6 +73,21 @@ export const useCart = (): CartHook => {
     window.dispatchEvent(new Event('localStorageChange'));
     console.log('useCart: Token state updated and event dispatched');
   };
+  const resetSession = () => {
+    console.log('useCart: Resetting session data (preserving cart ID)');
+    
+    // Clear session-related localStorage items only (keep cart_id)
+    localStorage.removeItem('session_id');
+    localStorage.removeItem('auth_token');
+    
+    // Clear session-related state only (keep cartId)
+    setSessionIdState(null);
+    setTokenState(null);
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('localStorageChange'));
+    console.log('useCart: Session reset complete, cart ID preserved');
+  };
 
   return {
     cartId,
@@ -80,5 +96,6 @@ export const useCart = (): CartHook => {
     setSessionId,
     token,
     setToken,
+    resetSession,
   };
 };

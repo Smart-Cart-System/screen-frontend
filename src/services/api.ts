@@ -3,6 +3,9 @@ import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequ
 
 const API_BASE_URL = "https://api.duckycart.me";
 
+// Event to notify when token is expired
+export const tokenExpiredEvent = new CustomEvent('tokenExpired');
+
 // Get the authentication token from localStorage
 const getAuthToken = (): string => {
   const token = localStorage.getItem('auth_token');
@@ -18,6 +21,22 @@ const getHeaders = () => {
   };
 };
 
+// Helper function to handle API responses and check for token expiration
+const handleApiResponse = async (response: Response) => {
+  if (response.status === 401) {
+    console.log('🔐 Received 401 Unauthorized - token may be expired');
+    // Dispatch event to notify app of token expiration
+    window.dispatchEvent(tokenExpiredEvent);
+    throw new Error('Unauthorized - token expired');
+  }
+  
+  if (!response.ok) {
+    throw new Error(`API request failed with status ${response.status}`);
+  }
+  
+  return response;
+};
+
 export const fetchCartItems = async (sessionId: number): Promise<CartItemResponse> => {
   console.log(`Fetching cart items for session: ${sessionId}`);
   
@@ -28,6 +47,9 @@ export const fetchCartItems = async (sessionId: number): Promise<CartItemRespons
       { headers: getHeaders() }
     );
     console.log('Response status:', response.status);
+    
+    // Handle API response and check for token expiration
+    await handleApiResponse(response);
     
     // Get response as text first
     const text = await response.text();
@@ -71,6 +93,10 @@ export const fetchItemByBarcode = async (barcode: number): Promise<ItemReadRespo
       `${API_BASE_URL}/items/read/${barcode}`,
       { headers: getHeaders() }
     );
+    
+    // Handle API response and check for token expiration
+    await handleApiResponse(response);
+    
     const data = await response.json();
     
     // Log the received data to confirm image_url is present
