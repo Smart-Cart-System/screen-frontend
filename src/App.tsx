@@ -8,18 +8,21 @@ import ItemPreview from './components/Preview/ItemPreview';
 import WeightErrorPopup from './components/Preview/WeightErrorPopup';
 import ConfigScreen from './components/ConfigScreen';
 import SessionInitializer from './components/SessionInitializer';
+import ThankYouScreen from './components/ThankYouScreen';
 import { useTranslation } from 'react-i18next';
 import { CartWebSocket, CartWebSocketMessage } from './services/websocket';
 import { fetchCartItems, fetchItemByBarcode } from './services/api';
 import { useCart } from './hooks/useCart';
+import { useTokenExpiration } from './hooks/useTokenExpiration';
 
 function App() {
-  const { cartId, sessionId, token } = useCart();
+  const { cartId, sessionId, token, resetSession } = useCart();
   const [activeSection, setActiveSection] = useState<NavSection>('offers');
   const [cartData, setCartData] = useState<CartItemResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [previewItem, setPreviewItem] = useState<ItemReadResponse | null>(null);
   const [weightError, setWeightError] = useState<WeightErrorType>(null);
+  const [showThankYou, setShowThankYou] = useState<boolean>(false);
   const webSocketRef = useRef<CartWebSocket | null>(null);
   const { i18n } = useTranslation();
   const isRTL = i18n.dir() === 'rtl';
@@ -29,7 +32,50 @@ function App() {
     hasSessionId: !!sessionId,
     hasToken: !!token,
     cartDataItems: cartData?.items?.length || 0
+  });  // Handle token expiration
+  const handleTokenExpired = useCallback(() => {
+    console.log('🔐 Token expired, resetting session state (preserving cart ID)');
+    
+    // Disconnect WebSocket if connected
+    if (webSocketRef.current) {
+      console.log('Disconnecting WebSocket due to token expiration');
+      webSocketRef.current.disconnect();
+      webSocketRef.current = null;
+    }
+    
+    // Clear session-related state and data
+    setCartData(null);
+    setPreviewItem(null);
+    setWeightError(null);
+    setActiveSection('offers');
+    setIsLoading(false);
+    setShowThankYou(false);
+    
+    // Reset session data only (this will trigger re-render and show SessionInitializer)
+    // Cart ID will be preserved for reconnection
+    resetSession();
+  }, [resetSession]);
+
+  // Check token expiration
+  useTokenExpiration({
+    token,
+    onTokenExpired: handleTokenExpired,
+    checkInterval: 30000 // Check every 30 seconds
   });
+
+  // Listen for token expiration events from API calls
+  useEffect(() => {
+    const handleApiTokenExpired = () => {
+      console.log('🔐 Token expired event received from API call');
+      handleTokenExpired();
+    };
+
+    window.addEventListener('tokenExpired', handleApiTokenExpired);
+    
+    return () => {
+      window.removeEventListener('tokenExpired', handleApiTokenExpired);
+    };
+  }, [handleTokenExpired]);
 
   // Set the correct document direction when language changes
   useEffect(() => {
@@ -51,11 +97,10 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, [sessionId]);
-
-  // WebSocket message handler
+  }, [sessionId]);  // WebSocket message handler
   const handleWebSocketMessage = useCallback((message: CartWebSocketMessage) => {
     console.log('🔔 WebSocket message handler called with:', message);
+    console.log('🔔 Message type received:', JSON.stringify(message.type));
     
     // Extract barcode from message data
     let barcode: number | null = null;
@@ -86,15 +131,17 @@ function App() {
         })
         .catch(error => {
           console.error('Failed to fetch preview item:', error);
-        });
-    } else if (message.type === 'weight increased') {
+        });    } else if (message.type === 'weight increased') {
       console.log('⚠️ Weight increased detected');
       setWeightError('increased');
     } else if (message.type === 'weight decreased') {
       console.log('⚠️ Weight decreased detected');
       setWeightError('decreased');
+    } else if (message.type === 'payment-success' || message.type === 'Payment successful') {
+      console.log('💳 Payment successful, showing thank you screen');
+      setShowThankYou(true);
     }
-  }, [loadCartData]);  // Initialize WebSocket connection
+  }, [loadCartData]);// Initialize WebSocket connection
   useEffect(() => {
     if (!sessionId) return;
     
@@ -144,7 +191,16 @@ function App() {
   const handleClosePreview = () => {
     setPreviewItem(null);
   };
-
+  const handleThankYouComplete = () => {
+    console.log('🎉 Thank you screen completed, resetting session');
+    console.log('🎉 Current state before reset:', { cartId, sessionId, token });
+    setShowThankYou(false);
+    
+    // Reset session while preserving cart ID
+    handleTokenExpired(); // This will reset the session and return to SessionInitializer
+    
+    console.log('🎉 Session reset triggered, should return to SessionInitializer');
+  };
   // Conditional rendering AFTER all hooks have been called
   if (!cartId) {
     console.log('No cartId, showing ConfigScreen');
@@ -155,9 +211,12 @@ function App() {
     console.log('No sessionId, showing SessionInitializer');
     return <SessionInitializer cartId={cartId} />;
   }
+  if (showThankYou) {
+    console.log('Payment completed, showing ThankYou screen');
+    return <ThankYouScreen sessionId={parseInt(sessionId!, 10)} onComplete={handleThankYouComplete} />;
+  }
 
   console.log('Both cartId and sessionId available, showing main cart interface');
-
   return (
     <div className="flex h-screen">
       <LanguageSwitcher />
@@ -191,8 +250,7 @@ function App() {
           item={previewItem} 
           onClose={handleClosePreview} 
         />
-      )}
-      
+      )}      
       {/* Weight Error Popup */}
       <WeightErrorPopup errorType={weightError} />
     </div>

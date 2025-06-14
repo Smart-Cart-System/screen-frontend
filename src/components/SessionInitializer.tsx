@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import QRCode from 'react-qr-code';
 import { useCart } from '../hooks/useCart';
+import { useTokenExpiration } from '../hooks/useTokenExpiration';
 
 interface SessionInitializerProps {
   cartId: string;
@@ -18,13 +19,46 @@ interface SSEEventData {
   event_type: string;
 }
 
-const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => {  const [qrToken, setQrToken] = useState<string | null>(null);
+const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => {  
+  const [qrToken, setQrToken] = useState<string | null>(null);
   const [isExpired, setIsExpired] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [forceUpdate, setForceUpdate] = useState(0);
-  const { setSessionId, setToken } = useCart();
+  const { setSessionId, setToken, token, resetSession } = useCart();
   const sseRef = useRef<EventSource | null>(null);
+
+  // Handle session token expiration (different from QR token)
+  const handleSessionTokenExpired = useCallback(() => {
+    console.log('🔐 Session token expired in SessionInitializer, resetting session');
+    resetSession();
+  }, [resetSession]);
+
+  // Check session token expiration
+  useTokenExpiration({
+    token,
+    onTokenExpired: handleSessionTokenExpired,
+    checkInterval: 30000 // Check every 30 seconds
+  });
+
+  // Check for expired session token on mount
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode<JWTPayload>(token);
+        const expirationTime = decoded.exp * 1000;
+        const currentTime = Date.now();
+        
+        if (expirationTime <= currentTime) {
+          console.log('🔐 Session token already expired on mount, resetting session');
+          handleSessionTokenExpired();
+        }
+      } catch (error) {
+        console.log('🔐 Invalid session token on mount, resetting session');
+        handleSessionTokenExpired();
+      }
+    }
+  }, []); // Only run on mount
 
   // Debug render
   console.log('SessionInitializer render:', { 
@@ -35,6 +69,7 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
     forceUpdate,
     cartId 
   });
+
   const fetchQRToken = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -86,6 +121,7 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
       setIsLoading(false);
     }
   }, [cartId]);
+
     // Monitor expiration and close SSE when QR expires
   useEffect(() => {
     if (isExpired) {
@@ -116,7 +152,9 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
 
   // Continuously check if QR token has expired
   useEffect(() => {
-    if (!qrToken) return;    const checkExpiration = () => {
+    if (!qrToken) return;    
+
+    const checkExpiration = () => {
       try {
         const decoded = jwtDecode<JWTPayload>(qrToken);
         const expirationTime = decoded.exp * 1000;
@@ -155,6 +193,7 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
     
     return () => clearInterval(interval);
   }, [qrToken, isExpired]);
+
   // Setup SSE connection when QR token is available
   useEffect(() => {
     if (!qrToken || isExpired) return;
@@ -203,7 +242,9 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
         console.error('Failed to parse SSE event data:', parseError);
         console.error('Raw event data was:', event.data);
       }
-    };    sse.onerror = (error) => {
+    };    
+
+    sse.onerror = (error) => {
       console.error('SSE connection error:', error);
       console.error('SSE readyState:', sse.readyState);
       console.error('SSE url:', sse.url);
@@ -221,6 +262,7 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
     // NO CLEANUP - KEEP SSE CONNECTION OPEN PERMANENTLY
     console.log('SSE connection established and will remain open');
   }, [qrToken, isExpired, cartId, setToken, setSessionId]);
+
   const handleQRClick = () => {
     console.log('QR Click - Current state:', { qrToken: !!qrToken, isExpired });
     
@@ -237,9 +279,12 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
       setError('');
       fetchQRToken();
     }
-  };return (
+  };
+
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl aspect-video overflow-hidden">        <div className="flex h-full">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl aspect-video overflow-hidden">        
+        <div className="flex h-full">
           {/* Left Column - Instructions */}
           <div className="flex-1 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto">
             {/* Top Section */}
@@ -343,7 +388,8 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => { 
                   </button>
                 </div>
               </div>
-            ) : (              <div className="text-center space-y-6">
+            ) : (              
+              <div className="text-center space-y-6">
                 <div className="relative">
                   <div 
                     className={`inline-block p-6 bg-white rounded-2xl border-4 transition-all duration-300 ${

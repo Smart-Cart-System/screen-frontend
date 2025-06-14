@@ -21,6 +21,39 @@
     "noSession": "No active session. Please start a new session.",
     "creationFailed": "Failed to create payment. Please try again."
   },
+  "thankYou": {
+    "title": "Thank You!",
+    "subtitle": "Your shopping session is complete",
+    "services": {
+      "convenient": "Convenient shopping experience",
+      "timeEfficient": "Time-efficient cart scanning", 
+      "multilingual": "Multilingual support"
+    },
+    "nextCustomer": "Preparing for next customer in",
+    "continue": "Continue Now"
+  },
+  "feedback": {
+    "howWasExperience": "How was your shopping experience?",
+    "selectSatisfaction": "Please select your overall satisfaction level",
+    "tellUsMore": "Tell us more about your experience",
+    "selectReasons": "Select all that apply (optional)",
+    "additionalComments": "Additional Comments (Optional)",
+    "commentsPlaceholder": "Share any additional thoughts about your experience...",
+    "satisfaction": {
+      "sad": "Dissatisfied",
+      "neutral": "Neutral", 
+      "happy": "Satisfied"
+    },
+    "thankYou": "Thank You!",
+    "submitted": "Your feedback has been submitted successfully.",
+    "loading": "Loading feedback options...",
+    "submitting": "Submitting...",
+    "submit": "Submit Feedback",
+    "skip": "Skip",
+    "back": "Back",
+    "continue": "Continue",
+    "giveFeedback": "Give Feedback"
+  },
   "navbar": {    "offers": "Today's Offers",
     "map": "Store Map",
     "checklist": "Shopping List",
