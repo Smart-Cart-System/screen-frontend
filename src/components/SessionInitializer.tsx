@@ -222,8 +222,7 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => {
         const data: SSEEventData = JSON.parse(event.data);
         console.log('SSE Parsed event data:', data);
         console.log('SSE Event type:', data.event_type);
-        
-        if (data.event_type === 'session-started') {
+          if (data.event_type === 'session-started') {
           console.log('Session started event received:', data);
           
           // Store the new token and session ID
@@ -233,8 +232,10 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => {
           console.log('Stored session ID:', data.session_id);
           console.log('Stored token:', data.token);
           
-          // Do NOT close the SSE connection - keep it open for debugging
-          console.log('SSE session started processed, keeping connection open for debugging');
+          // Close the SSE connection after receiving credentials
+          console.log('Credentials received, closing SSE connection');
+          sse.close();
+          sseRef.current = null;
         } else {
           console.log('SSE Other event type received:', data.event_type, data);
         }
@@ -257,10 +258,15 @@ const SessionInitializer: React.FC<SessionInitializerProps> = ({ cartId }) => {
       } else {
         setError('Connection error. Please try again.');
       }
+    };    
+    // Cleanup function to close SSE connection
+    return () => {
+      console.log('Cleaning up SSE connection');
+      if (sseRef.current) {
+        sseRef.current.close();
+        sseRef.current = null;
+      }
     };
-    
-    // NO CLEANUP - KEEP SSE CONNECTION OPEN PERMANENTLY
-    console.log('SSE connection established and will remain open');
   }, [qrToken, isExpired, cartId, setToken, setSessionId]);
 
   const handleQRClick = () => {
