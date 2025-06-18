@@ -1,0 +1,114 @@
+{
+  "app": {
+    "title": "شاشة العربة الذكية"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "total": "المجموع:",
+    "empty": "سلة التسوق فارغة",
+    "loading": "جاري تحميل العناصر..."
+  },  "checkout": {
+    "title": "الدفع",
+    "createPayment": "إنشاء دفعة",
+    "creating": "جاري إنشاء الدفعة...",
+    "paymentCreated": "تم إنشاء الدفعة!",
+    "completeOnPhone": "أكمل الدفع من خلال تطبيق الجوال",
+    "waitingForPayment": "في انتظار تأكيد الدفع...",
+    "paymentSuccess": "تم الدفع بنجاح!",
+    "paymentFailed": "فشل الدفع. يرجى المحاولة مرة أخرى.",
+    "paymentRetrying": "جاري إعادة المحاولة...",
+    "createAnother": "إنشاء دفعة أخرى",
+    "noSession": "لا توجد جلسة نشطة. يرجى بدء جلسة جديدة.",
+    "creationFailed": "فشل في إنشاء الدفعة. يرجى المحاولة مرة أخرى."
+  },
+  "thankYou": {
+    "title": "شكراً لك!",
+    "subtitle": "انتهت جلسة التسوق الخاصة بك",
+    "services": {
+      "convenient": "تجربة تسوق مريحة",
+      "timeEfficient": "مسح سريع وفعال للعربة",
+      "multilingual": "دعم متعدد اللغات"
+    },
+    "nextCustomer": "جاري التحضير للعميل التالي خلال",
+    "continue": "المتابعة الآن"
+  },
+  "feedback": {
+    "howWasExperience": "كيف كانت تجربة التسوق؟",
+    "selectSatisfaction": "يرجى اختيار مستوى رضاك العام",
+    "tellUsMore": "أخبرنا المزيد عن تجربتك",
+    "selectReasons": "اختر كل ما ينطبق (اختياري)",
+    "additionalComments": "تعليقات إضافية (اختياري)",
+    "commentsPlaceholder": "شارك أي أفكار إضافية حول تجربتك...",
+    "satisfaction": {
+      "sad": "غير راضي",
+      "neutral": "محايد",
+      "happy": "راضي"
+    },
+    "thankYou": "شكراً لك!",
+    "submitted": "تم إرسال ملاحظاتك بنجاح.",
+    "loading": "جاري تحميل خيارات الملاحظات...",
+    "submitting": "جاري الإرسال...",
+    "submit": "إرسال الملاحظات",
+    "skip": "تخطي",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "giveFeedback": "إعطاء ملاحظات"
+  },
+  "navbar": {    "offers": "عروض اليوم",
+    "map": "خريطة المتجر",
+    "checklist": "قائمة التسوق",
+    "help": "المساعدة",
+    "checkout": "الدفع"
+  },
+  "offerSection": {
+    "title": "عروض اليوم",
+    "noPromotions": "لا توجد عروض متاحة حالياً"
+  },  "storeMap": {
+    "title": "خريطة المتجر",
+    "loading": "جاري تحميل خريطة المتجر...",
+    "error": "فشل في تحميل خريطة المتجر",
+    "retry": "إعادة المحاولة",
+    "navigation": "التنقل",
+    "navigateToPromotion": "الانتقال إلى العرض",
+    "calculating": "جاري الحساب...",
+    "pathFound": "تم العثور على المسار!",
+    "distance": "المسافة",
+    "steps": "خطوات",
+    "promotionsAlongPath": "العروض على طول المسار",
+    "legend": "دليل الخريطة",
+    "walkableAisle": "ممر قابل للمشي",
+    "nonWalkable": "غير قابل للمشي",
+    "selected": "محدد",
+    "navigationPath": "مسار التنقل",
+    "selectedAisle": "الممر المحدد",
+    "aisleInfo": "عرض تفاصيل الممر والموقع على الخريطة أعلاه. للانتقال إلى العروض، استخدم قسم \"عروض اليوم\"."  },
+  "shoppingList": {
+    "title": "قائمة التسوق",
+    "addNew": "أضف عنصراً جديداً...",
+    "add": "إضافة"
+  },
+  "help": {
+    "title": "المساعدة والدعم",
+    "needMoreHelp": "تحتاج إلى مزيد من المساعدة؟",
+    "requestSupport": "طلب الدعم",
+    "supportRequested": "تم إرسال طلب الدعم!"
+  },
+  "preview": {
+    "title": "معاينة المنتج",
+    "beingScanned": "يتم مسح هذا المنتج"
+  },
+  "weightError": {
+    "title": "تم اكتشاف تغيير في الوزن",
+    "increased": "تمت إضافة عنصر غير معروف للسلة",
+    "decreased": "تمت إزالة عنصر غير معروف من السلة",
+    "scanRequest": "يرجى مسح العنصر للمتابعة"
+  },
+  "common": {
+    "outOfStock": "غير متوفر",
+    "addToCart": "أضف إلى السلة",
+    "language": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "currency": "ج.م."
+  }
+}
