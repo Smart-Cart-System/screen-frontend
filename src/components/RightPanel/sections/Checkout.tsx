@@ -9,9 +9,8 @@ const Checkout: React.FC = () => {
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('idle');
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
-  
-  const { t } = useTranslation();
-  const { sessionId } = useCart();
+    const { t } = useTranslation();
+  const { sessionId, resetSession } = useCart();
 
   // WebSocket connection for payment notifications
   useEffect(() => {
@@ -23,11 +22,13 @@ const Checkout: React.FC = () => {
     const wsClient = new CartWebSocket(sessionIdNum);
     
     const handlePaymentMessage = (message: CartWebSocketMessage) => {
-      switch (message.type) {
-        case 'payment-success':
+      switch (message.type) {        case 'payment-success':
+          console.log('💳 Payment successful in Checkout component, clearing session');
           setPaymentStatus('success');
           setPaymentError(null);
           setIsCreatingPayment(false);
+          // Clear session ID and auth token from localStorage immediately on payment success
+          resetSession();
           break;
         case 'payment-failed':
           setPaymentStatus('failed');

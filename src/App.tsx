@@ -136,10 +136,11 @@ function App() {
       setWeightError('increased');
     } else if (message.type === 'weight decreased') {
       console.log('⚠️ Weight decreased detected');
-      setWeightError('decreased');
-    } else if (message.type === 'payment-success' || message.type === 'Payment successful') {
-      console.log('💳 Payment successful, showing thank you screen');
+      setWeightError('decreased');    } else if (message.type === 'payment-success' || message.type === 'Payment successful') {
+      console.log('💳 Payment successful, clearing session and showing thank you screen');
       setShowThankYou(true);
+      // Clear session ID and auth token from localStorage immediately on payment success
+      resetSession();
     }
   }, [loadCartData]);// Initialize WebSocket connection
   useEffect(() => {
@@ -190,16 +191,34 @@ function App() {
   }, [handleWebSocketMessage, loadCartData, sessionId]);
   const handleClosePreview = () => {
     setPreviewItem(null);
-  };
-  const handleThankYouComplete = () => {
-    console.log('🎉 Thank you screen completed, resetting session');
+  };  const handleThankYouComplete = () => {
+    console.log('🎉 Thank you screen completed, resetting UI state');
     console.log('🎉 Current state before reset:', { cartId, sessionId, token });
     setShowThankYou(false);
     
-    // Reset session while preserving cart ID
-    handleTokenExpired(); // This will reset the session and return to SessionInitializer
+    // Reset all UI state and return to SessionInitializer
+    // Session data (sessionId, token) should already be cleared when payment was successful
+    // We just need to reset the UI state
+    if (webSocketRef.current) {
+      console.log('Disconnecting WebSocket due to session completion');
+      webSocketRef.current.disconnect();
+      webSocketRef.current = null;
+    }
     
-    console.log('🎉 Session reset triggered, should return to SessionInitializer');
+    // Clear UI state
+    setCartData(null);
+    setPreviewItem(null);
+    setWeightError(null);
+    setActiveSection('offers');
+    setIsLoading(false);
+    
+    // If session data wasn't already cleared (safety check), clear it now
+    if (sessionId || token) {
+      console.log('🔐 Session data still exists, clearing it now');
+      resetSession();
+    }
+    
+    console.log('🎉 UI state reset complete, should return to SessionInitializer');
   };
   // Conditional rendering AFTER all hooks have been called
   if (!cartId) {
