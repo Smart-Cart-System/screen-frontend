@@ -19,7 +19,9 @@
     "paymentRetrying": "Retrying payment...",
     "createAnother": "Create Another Payment",
     "noSession": "No active session. Please start a new session.",
-    "creationFailed": "Failed to create payment. Please try again."
+    "creationFailed": "Failed to create payment. Please try again.",
+    "paymentIssue": "Having payment issues?",
+    "manualComplete": "Complete Manually"
   },
   "thankYou": {
     "title": "Thank You!",
