@@ -9,9 +9,8 @@ const Checkout: React.FC = () => {
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('idle');
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
-  
-  const { t } = useTranslation();
-  const { sessionId } = useCart();
+    const { t } = useTranslation();
+  const { sessionId, resetSession } = useCart();
 
   // WebSocket connection for payment notifications
   useEffect(() => {
@@ -23,11 +22,13 @@ const Checkout: React.FC = () => {
     const wsClient = new CartWebSocket(sessionIdNum);
     
     const handlePaymentMessage = (message: CartWebSocketMessage) => {
-      switch (message.type) {
-        case 'payment-success':
+      switch (message.type) {        case 'payment-success':
+          console.log('💳 Payment successful in Checkout component, clearing session');
           setPaymentStatus('success');
           setPaymentError(null);
           setIsCreatingPayment(false);
+          // Clear session ID and auth token from localStorage immediately on payment success
+          resetSession();
           break;
         case 'payment-failed':
           setPaymentStatus('failed');
@@ -72,11 +73,19 @@ const Checkout: React.FC = () => {
       setIsCreatingPayment(false);
     }
   };
-
   const resetPayment = () => {
     setPaymentStatus('idle');
     setPaymentError(null);
     setIsCreatingPayment(false);
+  };
+
+  const handleManualThankYou = () => {
+    console.log('🔧 Manual thank you triggered - simulating payment success');
+    setPaymentStatus('success');
+    setPaymentError(null);
+    setIsCreatingPayment(false);
+    // Clear session ID and auth token from localStorage immediately on manual completion
+    resetSession();
   };
 
   const getStatusDisplay = () => {
@@ -135,10 +144,9 @@ const Checkout: React.FC = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">{t('checkout.title')}</h2>
-      
-      <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6">
         {paymentStatus === 'idle' ? (
-          <div className="text-center">
+          <div className="text-center space-y-4">
             <p className="text-gray-600 mb-6">
               {t('checkout.completeOnPhone')}
             </p>
@@ -149,22 +157,48 @@ const Checkout: React.FC = () => {
             >
               {t('checkout.createPayment')}
             </button>
+            
+            {/* Manual Thank You Button for Payment Issues */}
+            <div className="pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-500 mb-3">
+                {t('checkout.paymentIssue', 'Having payment issues?')}
+              </p>
+              <button
+                className="w-full py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors"
+                onClick={handleManualThankYou}
+                disabled={!sessionId}
+              >
+                {t('checkout.manualComplete', 'Complete Manually')}
+              </button>
+            </div>
           </div>
         ) : (
           <div className="space-y-6">
             {getStatusDisplay()}
-            
-            {(paymentStatus === 'failed' || paymentStatus === 'success') && (
-              <button
-                className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                onClick={resetPayment}
-              >
-                {paymentStatus === 'success' 
-                  ? t('checkout.createAnother')
-                  : t('checkout.createPayment')
-                }
-              </button>
-            )}          </div>
+              {(paymentStatus === 'failed' || paymentStatus === 'success') && (
+              <div className="space-y-3">
+                <button
+                  className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  onClick={resetPayment}
+                >
+                  {paymentStatus === 'success' 
+                    ? t('checkout.createAnother')
+                    : t('checkout.createPayment')
+                  }
+                </button>
+                
+                {/* Manual Thank You Button for Failed Payments */}
+                {paymentStatus === 'failed' && (
+                  <button
+                    className="w-full py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors"
+                    onClick={handleManualThankYou}
+                    disabled={!sessionId}
+                  >
+                    {t('checkout.manualComplete', 'Complete Manually')}
+                  </button>
+                )}
+              </div>
+            )}</div>
         )}
       </div>
     </div>
