@@ -2,9 +2,10 @@
 type MessageHandler = (message: CartWebSocketMessage) => void;
 
 export interface CartWebSocketMessage {
-  type: 'cart-updated' | 'item-read' | 'connection-established' | 'weight increased' | 'weight decreased' | 'payment-success' | 'Payment successful' | 'payment-failed' | 'payment-retrying';
+  type: 'cart-updated' | 'item-read' | 'connection-established' | 'weight increased' | 'weight decreased' | 'Payment successful' | 'payment-failed' | 'payment-retrying';
   data?: number | string | { barcode: number } | any;
   Message?: string;
+  message?: string; // For payment successful messages
 }
 
 export class CartWebSocket {
@@ -48,16 +49,23 @@ export class CartWebSocket {
             parsedMessage.type = 'connection-established';
           }
           
+          // Handle payment successful message
+          if (parsedMessage.message === "Payment successful") {
+            console.log('Payment successful message received');
+            parsedMessage.type = 'Payment successful';
+          }
+          
           // Log handlers count before calling
           console.log(`Notifying ${this.messageHandlers.length} message handlers`);
+          console.log('Current message handlers:', this.messageHandlers.map(h => h.name || 'anonymous'));
           
           // Notify all handlers about the new message - use setTimeout to ensure async execution
-          this.messageHandlers.forEach(handler => {
+          this.messageHandlers.forEach((handler, index) => {
             try {
               // Wrap handler call in setTimeout to ensure it runs in next event loop tick
               // This prevents any blocking behavior
               setTimeout(() => {
-                console.log('Calling handler with message:', parsedMessage);
+                console.log(`Calling handler ${index} with message:`, parsedMessage);
                 handler(parsedMessage);
               }, 0);
             } catch (error) {
@@ -104,16 +112,23 @@ export class CartWebSocket {
   }
 
   disconnect(): void {
+    console.log('WebSocket disconnect called');
+    console.log('Current handlers count before disconnect:', this.messageHandlers.length);
+    
     if (this.socket) {
       this.socket.close();
       this.socket = null;
+      console.log('WebSocket connection closed');
     }
     
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout);
       this.reconnectTimeout = null;
+      console.log('Reconnect timeout cleared');
     }
     
+    // Only clear handlers if explicitly disconnecting
     this.messageHandlers = [];
+    console.log('Message handlers cleared');
   }
 }
