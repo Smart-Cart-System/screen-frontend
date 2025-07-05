@@ -14,6 +14,7 @@ import { CartWebSocket, CartWebSocketMessage } from './services/websocket';
 import { fetchCartItems, fetchItemByBarcode } from './services/api';
 import { useCart } from './hooks/useCart';
 import { useTokenExpiration } from './hooks/useTokenExpiration';
+import './utils/generatePasswordHash'; // For development password hash generation
 
 function App() {
   const { cartId, sessionId, token, resetSession } = useCart();
