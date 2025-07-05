@@ -136,17 +136,17 @@ function App() {
       setWeightError('increased');
     } else if (message.type === 'weight decreased') {
       console.log('⚠️ Weight decreased detected');
-      setWeightError('decreased');    } else if (message.type === 'payment-success' || message.type === 'Payment successful') {
-      console.log('💳 Payment successful, clearing session and showing thank you screen');
+      setWeightError('decreased');    } else if (message.type === 'Payment successful') {
+      console.log('💳 Payment successful, showing thank you screen');
       setShowThankYou(true);
-      // Clear session ID and auth token from localStorage immediately on payment success
-      resetSession();
+      // Note: Session will be cleared when thank you screen is completed
     }
-  }, [loadCartData]);// Initialize WebSocket connection
+  }, [loadCartData]);  // Initialize WebSocket connection
   useEffect(() => {
     if (!sessionId) return;
     
     console.log('🔌 Initializing WebSocket connection for session:', sessionId);
+    console.log('🔌 Current WebSocket ref status:', webSocketRef.current ? 'exists' : 'null');
     
     // Always disconnect existing WebSocket if it exists
     if (webSocketRef.current) {
@@ -162,6 +162,7 @@ function App() {
     // Add the message handler to the WebSocket
     ws.addMessageHandler(handleWebSocketMessage);
     console.log('Added message handler to WebSocket');
+    console.log('WebSocket handlers count after adding:', ws.handlers.length);
     
     // Connect after the handler is set up
     ws.connect();
@@ -175,15 +176,19 @@ function App() {
         console.warn('⚠️ No message handlers attached to WebSocket!');
       }
       console.log('🔄 App component is still alive, WebSocket should be active');
+      console.log('🔄 Current WebSocket handlers count:', webSocketRef.current?.handlers?.length || 0);
     }, 5000);
     
     // Cleanup on unmount
     return () => {
       console.log('🔌 Disconnecting WebSocket...');
+      console.log('🔌 WebSocket handlers count before cleanup:', webSocketRef.current?.handlers?.length || 0);
       clearInterval(intervalId);
       if (webSocketRef.current) {
         webSocketRef.current.removeMessageHandler(handleWebSocketMessage);
+        console.log('🔌 WebSocket handlers count after removing handler:', webSocketRef.current.handlers.length);
         if (webSocketRef.current.handlers.length === 0) {
+          console.log('🔌 No more handlers, disconnecting WebSocket');
           webSocketRef.current.disconnect();
         }
       }
@@ -197,8 +202,6 @@ function App() {
     setShowThankYou(false);
     
     // Reset all UI state and return to SessionInitializer
-    // Session data (sessionId, token) should already be cleared when payment was successful
-    // We just need to reset the UI state
     if (webSocketRef.current) {
       console.log('Disconnecting WebSocket due to session completion');
       webSocketRef.current.disconnect();
@@ -212,11 +215,9 @@ function App() {
     setActiveSection('offers');
     setIsLoading(false);
     
-    // If session data wasn't already cleared (safety check), clear it now
-    if (sessionId || token) {
-      console.log('🔐 Session data still exists, clearing it now');
-      resetSession();
-    }
+    // Clear session data now (after thank you screen is completed)
+    console.log('🔐 Clearing session data after thank you screen completion');
+    resetSession();
     
     console.log('🎉 UI state reset complete, should return to SessionInitializer');
   };

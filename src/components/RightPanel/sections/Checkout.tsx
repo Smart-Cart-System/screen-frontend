@@ -22,7 +22,7 @@ const Checkout: React.FC = () => {
     const wsClient = new CartWebSocket(sessionIdNum);
     
     const handlePaymentMessage = (message: CartWebSocketMessage) => {
-      switch (message.type) {        case 'payment-success':
+      switch (message.type) {        case 'Payment successful':
           console.log('💳 Payment successful in Checkout component, clearing session');
           setPaymentStatus('success');
           setPaymentError(null);

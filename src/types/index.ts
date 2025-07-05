@@ -184,7 +184,7 @@ export type PaymentStatus = 'idle' | 'processing' | 'success' | 'failed' | 'retr
 
 // WebSocket payment message types
 export interface PaymentWebSocketMessage {
-  type: 'payment-success' | 'payment-failed' | 'payment-retrying';
+  type: 'Payment successful' | 'payment-failed' | 'payment-retrying';
   data?: {
     payment_id: string;
     session_id: number;
