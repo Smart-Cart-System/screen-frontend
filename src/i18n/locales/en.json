@@ -20,8 +20,12 @@
     "createAnother": "Create Another Payment",
     "noSession": "No active session. Please start a new session.",
     "creationFailed": "Failed to create payment. Please try again.",
-    "paymentIssue": "Having payment issues?",
-    "manualComplete": "Complete Manually"
+    "modal": {
+      "sessionComplete": "Session Complete",
+      "payOnPhone": "Please complete your payment on your mobile device",
+      "sessionEnded": "Your shopping session has ended. The cart is now locked and waiting for payment confirmation.",
+      "waitingPayment": "Waiting for payment..."
+    }
   },
   "thankYou": {
     "title": "Thank You!",
@@ -87,7 +91,16 @@
   "shoppingList": {
     "title": "Shopping List",
     "addNew": "Add new item...",
-    "add": "Add"
+    "add": "Add",
+    "loading": "Loading checklist...",
+    "noChecklist": "No pinned checklist found.",
+    "pinFromMobile": "Pin a checklist from your mobile app to see it here.",
+    "pinnedFrom": "Pinned from mobile app:",
+    "empty": "Your checklist is empty.",
+    "syncedWith": "Synced with your mobile app • Updates automatically",
+    "failed": "Failed to load checklist",
+    "updateFailed": "Failed to update item",
+    "retry": "Retry"
   },
   "help": {
     "title": "Help & Support",

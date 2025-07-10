@@ -221,3 +221,24 @@ export interface NavigationPath {
   target_promotion_id: number;
   target_aisle_id: number;
 }
+
+// Checklist Types
+export interface ChecklistItem {
+  id: number;
+  text: string;
+  checked: boolean;
+  checklist_id: number;
+}
+
+export interface Checklist {
+  id: number;
+  name: string;
+  is_pinned: boolean;
+  user_id: number;
+  items: ChecklistItem[];
+}
+
+export interface ChecklistItemUpdate {
+  text?: string;
+  checked?: boolean;
+}

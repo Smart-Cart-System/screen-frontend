@@ -1,5 +1,5 @@
 // API service for cart and item operations
-import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequest, PaymentResponse, FeedbackItem, FeedbackSubmission, FeedbackResponse, SatisfactionLevel } from "../types";
+import { CartItemResponse, ItemReadResponse, ApiCartItem, Promotion, PaymentRequest, PaymentResponse, FeedbackItem, FeedbackSubmission, FeedbackResponse, SatisfactionLevel, Checklist, ChecklistItem, ChecklistItemUpdate } from "../types";
 
 const API_BASE_URL = "https://api.duckycart.me";
 
@@ -397,6 +397,52 @@ export const getFeedbackForSession = async (sessionId: number): Promise<Feedback
     return data;
   } catch (error) {
     console.error('Error retrieving feedback:', error);
+    throw error;
+  }
+};
+
+// Checklist API Functions
+export const fetchPinnedChecklist = async (): Promise<Checklist | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/checklists/pinned`,
+      { headers: getHeaders() }
+    );
+    
+    if (response.status === 404) {
+      console.log('No pinned checklist found');
+      return null;
+    }
+    
+    await handleApiResponse(response);
+    
+    const data = await response.json();
+    console.log('Pinned checklist fetched:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching pinned checklist:', error);
+    throw error;
+  }
+};
+
+export const updateChecklistItem = async (checklistId: number, itemId: number, updateData: ChecklistItemUpdate): Promise<ChecklistItem> => {
+  try {
+    console.log('Updating item ID:', itemId, 'in checklist ID:', checklistId, 'Data:', updateData);
+    
+    const response = await fetch(`${API_BASE_URL}/checklists/${checklistId}/items/${itemId}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(updateData),
+    });
+
+    console.log('Update item API response status:', response.status);
+    await handleApiResponse(response);
+
+    const updatedItem = await response.json();
+    console.log('Successfully updated item:', updatedItem);
+    return updatedItem;
+  } catch (error) {
+    console.error('Error updating item:', error);
     throw error;
   }
 };
